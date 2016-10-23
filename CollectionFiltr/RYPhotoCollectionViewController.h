@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  RYPhotoCollectionViewController.h
 //  CollectionFiltr
 //
 //  Created by Richard Yeh on 10/22/16.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface RYPhotoCollectionViewController : UICollectionViewController
 
 @end
-
