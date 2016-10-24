@@ -65,9 +65,13 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+
+    // segue for popover with list of filters
     if ([segue.identifier isEqualToString:@"showFilterListPopoverSegue"]) {
         RYFilterListTableViewController *filterListTableVC = [segue destinationViewController];
         filterListTableVC.popoverPresentationController.delegate = self;
+        filterListTableVC.popoverPresentationController.popoverLayoutMargins = UIEdgeInsetsMake(0.0, 0.0, -20.0, 0.0); // ignored: iOS bug (http://www.openradar.me/26290990)
+        filterListTableVC.preferredContentSize = CGSizeMake(200, 450);
         filterListTableVC.delegate = self;
     }
 
@@ -161,12 +165,47 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     return UIModalPresentationNone;
 }
 
-- (void)selectedFilterName:(NSString *)filterName {
-    if ([filterName isEqualToString:@"Gaussian Blur"]) {
-        self.currentFilter = [CIFilter filterWithName:@"CIGaussianBlur" keysAndValues:@"inputRadius", @8.0, nil];
+// image filters defined here
+- (void)selectedFilter:(RYCIFilter)filterEnum {
+    switch (filterEnum) {
+
+        case RYCIPhotoEffectChrome:
+            self.currentFilter = [CIFilter filterWithName:@"CIPhotoEffectChrome"];
+            break;
+        case RYCIComicEffect:
+            self.currentFilter = [CIFilter filterWithName:@"CIComicEffect"];
+            break;
+        case RYCICrystallize:
+            self.currentFilter = [CIFilter filterWithName:@"CICrystallize"];
+            break;
+        case RYCIGaussianBlur:
+            self.currentFilter = [CIFilter filterWithName:@"CIGaussianBlur" keysAndValues:@"inputRadius", @8.0, nil];
+            break;
+        case RYCIPhotoEffectInstant:
+            self.currentFilter = [CIFilter filterWithName:@"CIPhotoEffectInstant"];
+            break;
+        case RYCIPhotoEffectMono:
+            self.currentFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"];
+            break;
+        case RYCIPhotoEffectNoir:
+            self.currentFilter = [CIFilter filterWithName:@"CIPhotoEffectNoir"];
+            break;
+        case RYCIPhotoEffectProcess:
+            self.currentFilter = [CIFilter filterWithName:@"CIPhotoEffectProcess"];
+            break;
+        case RYCISepiaTone:
+            self.currentFilter = [CIFilter filterWithName:@"CISepiaTone"];
+            break;
+        case RYCIVignetteEffect:
+            self.currentFilter = [CIFilter filterWithName:@"CIVignetteEffect"];
+            break;
+            
+        default:
+            break;
     }
     
     [self.collectionView reloadData];
+
 }
 
 - (IBAction)resetFilters:(id)sender {

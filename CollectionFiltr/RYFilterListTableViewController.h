@@ -8,9 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, RYCIFilter) {
+    RYCIPhotoEffectChrome,
+    RYCIComicEffect,
+    RYCICrystallize,
+    RYCIGaussianBlur,
+    RYCIPhotoEffectInstant,
+    RYCIPhotoEffectMono,
+    RYCIPhotoEffectNoir,
+    RYCIPhotoEffectProcess,
+    RYCISepiaTone,
+    RYCIVignetteEffect
+};
+
 @protocol RYFilterListTableViewDelegate <NSObject>
 @required
-- (void)selectedFilterName:(NSString *)filterName;         // returns selected filter back to collection view 
+- (void)selectedFilter:(RYCIFilter)filterEnum;         // returns selected filter back to collection view
 @end
 
 @interface RYFilterListTableViewController : UITableViewController <UITableViewDelegate>

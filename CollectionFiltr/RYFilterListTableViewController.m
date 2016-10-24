@@ -18,10 +18,11 @@ static NSString *const reuseIdentifier = @"FilterCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.filterList = @[@"Gaussian Blur", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J"];
+
+    self.filterList = @[@"Chrome", @"Comic", @"Crystallize", @"Gaussian Blur", @"Instant", @"Mono", @"Noir", @"Process", @"Sepia Tone", @"Vignette Effect"];
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:reuseIdentifier];
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -56,7 +57,7 @@ static NSString *const reuseIdentifier = @"FilterCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.delegate != nil) {
-        [self.delegate selectedFilterName:[self.filterList objectAtIndex:indexPath.row]];
+        [self.delegate selectedFilter:indexPath.row];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
