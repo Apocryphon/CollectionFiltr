@@ -58,7 +58,7 @@ static NSString *const reuseIdentifier = @"FilterCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.delegate != nil) {
         [self.delegate selectedFilter:indexPath.row];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:NO completion:nil];
     }
 }
 

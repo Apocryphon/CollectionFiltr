@@ -12,6 +12,7 @@
 
 @interface RYPhotoCollectionViewController ()
 @property (nonatomic, strong) NSMutableArray *userPhotos;
+@property (nonatomic, strong) PHCachingImageManager *cachingImageManager;
 @property (nonatomic, strong) CIContext *imageContext;
 @property (nonatomic, strong) CIFilter *currentFilter;
 
@@ -37,6 +38,13 @@ static NSString *const reuseIdentifier = @"PhotoCell";
         [self.userPhotos addObject:currentPhoto];
     }
     
+    // batch pre-cache images
+    self.cachingImageManager = [[PHCachingImageManager alloc] init];
+    [self.cachingImageManager startCachingImagesForAssets:self.userPhotos
+                                          targetSize:PHImageManagerMaximumSize
+                                         contentMode:PHImageContentModeAspectFit
+                                             options:nil];
+
     // setup Core Image properties
     self.imageContext = [CIContext contextWithOptions:nil];
 }
@@ -90,39 +98,47 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PHImageManager *manager = [PHImageManager defaultManager];
-
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+
     // Configure the cell
     if (cell.tag) {
-        [manager cancelImageRequest:(PHImageRequestID)cell.tag];
+        [self.cachingImageManager cancelImageRequest:(PHImageRequestID)cell.tag];
     }
 
     UIImageView *photoImageView = (UIImageView *)[cell viewWithTag:100];
-    cell.tag = [manager requestImageForAsset:[self.userPhotos objectAtIndex:indexPath.row]
+
+    // for fast loading of initial images
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.synchronous = true;
+    requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
+
+    // result handler that applies selected image filter
+    void (^resultHandler)(UIImage *, NSDictionary *) = ^(UIImage * _Nullable initialResult, NSDictionary * _Nullable info) {
+         if (!self.currentFilter) {
+            photoImageView.image = initialResult;
+            return;
+        } else {
+            CIImage *beginImage = [[CIImage alloc] initWithCGImage:initialResult.CGImage options:nil];
+            [self.currentFilter setValue:beginImage forKey:kCIInputImageKey];
+            CIImage *outputImage = [self.currentFilter outputImage];
+            
+            CGImageRef cgimg = [self.imageContext createCGImage:outputImage fromRect:[outputImage extent]];
+            
+            UIImage *filteredImage = [UIImage imageWithCGImage:cgimg];
+            photoImageView.image = filteredImage;
+            
+            CGImageRelease(cgimg);
+            return;
+
+        }
+    };
+
+    cell.tag = [self.cachingImageManager requestImageForAsset:[self.userPhotos objectAtIndex:indexPath.row]
                                   targetSize:CGSizeMake(100.0, 100.0)
                                  contentMode:PHImageContentModeAspectFill
-                                     options:nil
-                               resultHandler:^(UIImage * _Nullable resultImage, NSDictionary * _Nullable info) {
-                                   // apply the currently selected filter (from popover list) to current photos
-                                   if (self.currentFilter) {
-                                       CIImage *beginImage = [[CIImage alloc] initWithCGImage:resultImage.CGImage
-                                                                                      options:nil];
-                                       [self.currentFilter setValue:beginImage
-                                                             forKey:kCIInputImageKey];
-                                       CIImage *outputImage = [self.currentFilter outputImage];
-                                       
-                                       CGImageRef cgimg = [self.imageContext createCGImage:outputImage fromRect:[outputImage extent]];
-
-                                       UIImage *newImage = [UIImage imageWithCGImage:cgimg];
-                                       photoImageView.image = newImage;
-                                       
-                                       CGImageRelease(cgimg);
-                                   } else {
-                                       photoImageView.image = resultImage;
-                                   }
-                }];
+                                     options:requestOptions
+                               resultHandler:resultHandler];
 
     
     return cell;
@@ -164,6 +180,12 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
     return UIModalPresentationNone;
 }
+
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
+    [self dismissViewControllerAnimated:NO completion:nil];
+    return YES;
+}
+
 
 // image filters defined here
 - (void)selectedFilter:(RYCIFilter)filterEnum {
