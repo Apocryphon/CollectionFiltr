@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RYPhotoCollectionViewController : UICollectionViewController
+@interface RYPhotoCollectionViewController : UICollectionViewController <UIPopoverPresentationControllerDelegate>
 
 @end

@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xM9-8A-Oid">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rhL-Ga-9RX">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--Photo Collection View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="LOg-tn-3G1">
+            <objects>
+                <navigationController id="rhL-Ga-9RX" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="B4Y-Qd-hOX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="xM9-8A-Oid" kind="relationship" relationship="rootViewController" id="Fxx-dV-8jX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bDe-bo-4bd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="275.5" y="-521.5"/>
+        </scene>
+        <!--Collection Filtr-->
         <scene sceneID="Q20-jK-e7g">
             <objects>
                 <collectionViewController id="xM9-8A-Oid" customClass="RYPhotoCollectionViewController" sceneMemberID="viewController">
@@ -20,7 +37,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCell" id="Mvz-iw-592">
-                                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                <rect key="frame" x="0.0" y="64" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
@@ -46,11 +63,33 @@
                             <outlet property="delegate" destination="xM9-8A-Oid" id="Cc1-oP-1EU"/>
                         </connections>
                     </collectionView>
+                    <navigationItem key="navigationItem" title="Collection Filtr" id="CsX-Ns-EWx">
+                        <barButtonItem key="rightBarButtonItem" title="Filter List" id="dkd-Bg-zeq">
+                            <connections>
+                                <segue destination="ixd-eI-3vU" kind="popoverPresentation" identifier="showFilterListPopoverSegue" popoverAnchorBarButtonItem="dkd-Bg-zeq" id="e5H-AZ-9Ws">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="filterListButton" destination="dkd-Bg-zeq" id="azc-33-734"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3AW-9E-CCX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="276" y="216"/>
+            <point key="canvasLocation" x="767.5" y="-521.5"/>
+        </scene>
+        <!--Filter List Table View Controller-->
+        <scene sceneID="iMT-kH-q4t">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wEy-ox-WbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="ixd-eI-3vU" customClass="RYFilterListTableViewController" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1259.5" y="-515.5"/>
         </scene>
     </scenes>
 </document>

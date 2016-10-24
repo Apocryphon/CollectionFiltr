@@ -7,11 +7,16 @@
 //
 
 #import "RYPhotoCollectionViewController.h"
+#import "RYFilterListTableViewController.h"
 
 @import Photos;
 
 @interface RYPhotoCollectionViewController ()
 @property (nonatomic, strong) NSMutableArray *userPhotos;
+@property (nonatomic, strong) CIContext *imageContext;
+@property (nonatomic, strong) CIFilter *currentFilter;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *filterListButton;
 @end
 
 @implementation RYPhotoCollectionViewController
@@ -32,6 +37,9 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     for (PHAsset *currentPhoto in allPhotos) {
         [self.userPhotos addObject:currentPhoto];
     }
+    
+    // setup Core Image properties
+    self.imageContext = [CIContext contextWithOptions:nil];
 }
 
 - (void)viewDidLoad {
@@ -51,15 +59,20 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showFilterListPopoverSegue"]) {
+        RYFilterListTableViewController *filterListTableVC = [segue destinationViewController];
+        filterListTableVC.popoverPresentationController.delegate = self;
+    }
+
 }
-*/
+
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -125,5 +138,18 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 	
 }
 */
+
+#pragma mark - List of Filters
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
+    return UIModalPresentationNone;
+}
+
+- (IBAction)selectFilterTapped:(id)sender {
+    
+    
+}
+
+
 
 @end

@@ -14,6 +14,8 @@
 		2CF3084C1DBC10B800B7B16A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF3084A1DBC10B800B7B16A /* LaunchScreen.storyboard */; };
 		2CF308551DBC373100B7B16A /* RYPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF308541DBC373100B7B16A /* RYPhotoCollectionViewController.m */; };
 		2CF308571DBC430900B7B16A /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF308561DBC430900B7B16A /* Photos.framework */; };
+		2CF3085A1DBD93DF00B7B16A /* RYFilterListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF308591DBD93DF00B7B16A /* RYFilterListTableViewController.m */; };
+		2CF3085C1DBDA7B800B7B16A /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CF3085B1DBDA7B800B7B16A /* CoreImage.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,9 @@
 		2CF308531DBC373100B7B16A /* RYPhotoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RYPhotoCollectionViewController.h; sourceTree = "<group>"; };
 		2CF308541DBC373100B7B16A /* RYPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RYPhotoCollectionViewController.m; sourceTree = "<group>"; };
 		2CF308561DBC430900B7B16A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		2CF308581DBD93DF00B7B16A /* RYFilterListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RYFilterListTableViewController.h; sourceTree = "<group>"; };
+		2CF308591DBD93DF00B7B16A /* RYFilterListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RYFilterListTableViewController.m; sourceTree = "<group>"; };
+		2CF3085B1DBDA7B800B7B16A /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CF3085C1DBDA7B800B7B16A /* CoreImage.framework in Frameworks */,
 				2CF308571DBC430900B7B16A /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,6 +51,7 @@
 		2CF308301DBC10B800B7B16A = {
 			isa = PBXGroup;
 			children = (
+				2CF3085B1DBDA7B800B7B16A /* CoreImage.framework */,
 				2CF3083B1DBC10B800B7B16A /* CollectionFiltr */,
 				2CF308561DBC430900B7B16A /* Photos.framework */,
 				2CF3083A1DBC10B800B7B16A /* Products */,
@@ -65,12 +72,14 @@
 				2CF3083F1DBC10B800B7B16A /* AppDelegate.h */,
 				2CF308401DBC10B800B7B16A /* AppDelegate.m */,
 				2CF308451DBC10B800B7B16A /* Main.storyboard */,
+				2CF308531DBC373100B7B16A /* RYPhotoCollectionViewController.h */,
+				2CF308541DBC373100B7B16A /* RYPhotoCollectionViewController.m */,
+				2CF308581DBD93DF00B7B16A /* RYFilterListTableViewController.h */,
+				2CF308591DBD93DF00B7B16A /* RYFilterListTableViewController.m */,
 				2CF308481DBC10B800B7B16A /* Assets.xcassets */,
 				2CF3084A1DBC10B800B7B16A /* LaunchScreen.storyboard */,
 				2CF3084D1DBC10B800B7B16A /* Info.plist */,
 				2CF3083C1DBC10B800B7B16A /* Supporting Files */,
-				2CF308531DBC373100B7B16A /* RYPhotoCollectionViewController.h */,
-				2CF308541DBC373100B7B16A /* RYPhotoCollectionViewController.m */,
 			);
 			path = CollectionFiltr;
 			sourceTree = "<group>";
@@ -153,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CF3085A1DBD93DF00B7B16A /* RYFilterListTableViewController.m in Sources */,
 				2CF308551DBC373100B7B16A /* RYPhotoCollectionViewController.m in Sources */,
 				2CF308411DBC10B800B7B16A /* AppDelegate.m in Sources */,
 				2CF3083E1DBC10B800B7B16A /* main.m in Sources */,
@@ -304,6 +314,7 @@
 				2CF308521DBC10B800B7B16A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
