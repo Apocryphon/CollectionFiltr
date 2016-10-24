@@ -7,7 +7,6 @@
 //
 
 #import "RYPhotoCollectionViewController.h"
-#import "RYFilterListTableViewController.h"
 
 @import Photos;
 
@@ -69,6 +68,7 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     if ([segue.identifier isEqualToString:@"showFilterListPopoverSegue"]) {
         RYFilterListTableViewController *filterListTableVC = [segue destinationViewController];
         filterListTableVC.popoverPresentationController.delegate = self;
+        filterListTableVC.delegate = self;
     }
 
 }
@@ -100,8 +100,24 @@ static NSString *const reuseIdentifier = @"PhotoCell";
                                   targetSize:CGSizeMake(100.0, 100.0)
                                  contentMode:PHImageContentModeAspectFill
                                      options:nil
-                               resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                                            photoImageView.image = result;
+                               resultHandler:^(UIImage * _Nullable resultImage, NSDictionary * _Nullable info) {
+                                   // apply the currently selected filter (from popover list) to current photos
+                                   if (self.currentFilter) {
+                                       CIImage *beginImage = [[CIImage alloc] initWithCGImage:resultImage.CGImage
+                                                                                      options:nil];
+                                       [self.currentFilter setValue:beginImage
+                                                             forKey:kCIInputImageKey];
+                                       CIImage *outputImage = [self.currentFilter outputImage];
+                                       
+                                       CGImageRef cgimg = [self.imageContext createCGImage:outputImage fromRect:[outputImage extent]];
+
+                                       UIImage *newImage = [UIImage imageWithCGImage:cgimg];
+                                       photoImageView.image = newImage;
+                                       
+                                       CGImageRelease(cgimg);
+                                   } else {
+                                       photoImageView.image = resultImage;
+                                   }
                 }];
 
     
@@ -145,11 +161,19 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     return UIModalPresentationNone;
 }
 
-- (IBAction)selectFilterTapped:(id)sender {
+- (void)selectedFilterName:(NSString *)filterName {
+    if ([filterName isEqualToString:@"Gaussian Blur"]) {
+        self.currentFilter = [CIFilter filterWithName:@"CIGaussianBlur" keysAndValues:@"inputRadius", @8.0, nil];
+    }
     
-    
+    [self.collectionView reloadData];
 }
 
-
+- (IBAction)resetFilters:(id)sender {
+    if (self.currentFilter) {
+        self.currentFilter = nil;
+        [self.collectionView reloadData];
+    }
+}
 
 @end

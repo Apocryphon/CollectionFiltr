@@ -64,6 +64,11 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Collection Filtr" id="CsX-Ns-EWx">
+                        <barButtonItem key="leftBarButtonItem" title="Reset filters" id="vjb-nl-mdN">
+                            <connections>
+                                <action selector="resetFilters:" destination="xM9-8A-Oid" id="gBp-vr-ulg"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Filter List" id="dkd-Bg-zeq">
                             <connections>
                                 <segue destination="ixd-eI-3vU" kind="popoverPresentation" identifier="showFilterListPopoverSegue" popoverAnchorBarButtonItem="dkd-Bg-zeq" id="e5H-AZ-9Ws">
@@ -84,10 +89,10 @@
         <!--Filter List Table View Controller-->
         <scene sceneID="iMT-kH-q4t">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wEy-ox-WbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="ixd-eI-3vU" customClass="RYFilterListTableViewController" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wEy-ox-WbD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1259.5" y="-515.5"/>
         </scene>

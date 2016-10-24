@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RYFilterListTableViewController : UITableViewController
+@protocol RYFilterListTableViewDelegate <NSObject>
+@required
+- (void)selectedFilterName:(NSString *)filterName;         // returns selected filter back to collection view 
+@end
 
+@interface RYFilterListTableViewController : UITableViewController <UITableViewDelegate>
+@property (nonatomic, weak) id<RYFilterListTableViewDelegate> delegate;
 @end
