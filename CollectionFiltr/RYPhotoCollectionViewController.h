@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RYFilterListTableViewController.h"
+#import "RYImageFiltering.h"
 
-@interface RYPhotoCollectionViewController : UICollectionViewController <UIPopoverPresentationControllerDelegate, RYFilterListTableViewDelegate>
+@interface RYPhotoCollectionViewController : UICollectionViewController <UIPopoverPresentationControllerDelegate, RYFilterListTableViewDelegate, RYImageFilteringDelegate>
 
 @end

@@ -15,7 +15,7 @@
 @property (nonatomic, strong) PHCachingImageManager *cachingImageManager;
 @property (nonatomic, strong) CIContext *imageContext;
 @property (nonatomic, strong) CIFilter *currentFilter;
-
+@property (nonatomic, strong) NSOperationQueue *filtrationQueue;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterListButton;
 @end
 
@@ -47,6 +47,12 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 
     // setup Core Image properties
     self.imageContext = [CIContext contextWithOptions:nil];
+    
+    // set up for concurrency
+    if (self.filtrationQueue) {
+        self.filtrationQueue = [[NSOperationQueue alloc] init];
+        self.filtrationQueue.maxConcurrentOperationCount = 1;
+    }
 }
 
 - (void)viewDidLoad {
@@ -114,21 +120,14 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
 
     // result handler that applies selected image filter
+    __weak typeof(self) weakself = self;
     void (^resultHandler)(UIImage *, NSDictionary *) = ^(UIImage * _Nullable initialResult, NSDictionary * _Nullable info) {
-         if (!self.currentFilter) {
+         if (!weakself.currentFilter) {
             photoImageView.image = initialResult;
             return;
         } else {
-            CIImage *beginImage = [[CIImage alloc] initWithCGImage:initialResult.CGImage options:nil];
-            [self.currentFilter setValue:beginImage forKey:kCIInputImageKey];
-            CIImage *outputImage = [self.currentFilter outputImage];
-            
-            CGImageRef cgimg = [self.imageContext createCGImage:outputImage fromRect:[outputImage extent]];
-            
-            UIImage *filteredImage = [UIImage imageWithCGImage:cgimg];
-            photoImageView.image = filteredImage;
-            
-            CGImageRelease(cgimg);
+            RYImageFiltering *imageFiltering = [[RYImageFiltering alloc] initWithUIImage:initialResult imageFilter:weakself.currentFilter imageContext:weakself.imageContext indexPath:indexPath delegate:weakself];
+            [self.filtrationQueue addOperation:imageFiltering];
             return;
 
         }
@@ -186,7 +185,6 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     return YES;
 }
 
-
 // image filters defined here
 - (void)selectedFilter:(RYCIFilter)filterEnum {
     switch (filterEnum) {
@@ -235,6 +233,11 @@ static NSString *const reuseIdentifier = @"PhotoCell";
         self.currentFilter = nil;
         [self.collectionView reloadData];
     }
+}
+
+- (void)imageFilteringDone:(RYImageFiltering *)filtration {
+    [self.collectionView reloadItemsAtIndexPaths:@[filtration.currentIndexPath]];
+
 }
 
 @end
