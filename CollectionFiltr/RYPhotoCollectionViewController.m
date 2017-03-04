@@ -23,12 +23,13 @@
 
 static NSString *const reuseIdentifier = @"PhotoCell";
 
-- (void)awakeFromNib {
-    
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
     // fetch all photos from Camera Roll
     PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
     allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-
+    
     PHFetchResult *allPhotos = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage
                                                          options:allPhotosOptions];
     
@@ -41,19 +42,12 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     // batch pre-cache images
     self.cachingImageManager = [[PHCachingImageManager alloc] init];
     [self.cachingImageManager startCachingImagesForAssets:self.userPhotos
-                                          targetSize:PHImageManagerMaximumSize
-                                         contentMode:PHImageContentModeAspectFit
-                                             options:nil];
-
+                                               targetSize:PHImageManagerMaximumSize
+                                              contentMode:PHImageContentModeAspectFit
+                                                  options:nil];
+    
     // setup Core Image properties
     self.imageContext = [CIContext contextWithOptions:nil];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
 //    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
@@ -114,16 +108,17 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeFastFormat;
 
     // result handler that applies selected image filter
+    __weak typeof(self) weakSelf = self;
     void (^resultHandler)(UIImage *, NSDictionary *) = ^(UIImage * _Nullable initialResult, NSDictionary * _Nullable info) {
-         if (!self.currentFilter) {
+         if (!weakSelf.currentFilter) {
             photoImageView.image = initialResult;
             return;
         } else {
             CIImage *beginImage = [[CIImage alloc] initWithCGImage:initialResult.CGImage options:nil];
-            [self.currentFilter setValue:beginImage forKey:kCIInputImageKey];
-            CIImage *outputImage = [self.currentFilter outputImage];
+            [_currentFilter setValue:beginImage forKey:kCIInputImageKey];
+            CIImage *outputImage = [_currentFilter outputImage];
             
-            CGImageRef cgimg = [self.imageContext createCGImage:outputImage fromRect:[outputImage extent]];
+            CGImageRef cgimg = [_imageContext createCGImage:outputImage fromRect:[outputImage extent]];
             
             UIImage *filteredImage = [UIImage imageWithCGImage:cgimg];
             photoImageView.image = filteredImage;
@@ -144,48 +139,11 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     return cell;
 }
 
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
-
 #pragma mark - List of Filters
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
     return UIModalPresentationNone;
 }
-
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController {
-    [self dismissViewControllerAnimated:NO completion:nil];
-    return YES;
-}
-
 
 // image filters defined here
 - (void)selectedFilter:(RYCIFilter)filterEnum {
