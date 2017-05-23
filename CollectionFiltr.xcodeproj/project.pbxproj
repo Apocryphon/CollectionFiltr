@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C6217B31ED40F3D002C9803 /* RCYPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6217B21ED40F3D002C9803 /* RCYPhotoCell.m */; };
 		2CF3083E1DBC10B800B7B16A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF3083D1DBC10B800B7B16A /* main.m */; };
 		2CF308411DBC10B800B7B16A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF308401DBC10B800B7B16A /* AppDelegate.m */; };
 		2CF308471DBC10B800B7B16A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CF308451DBC10B800B7B16A /* Main.storyboard */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C6217B11ED40F3D002C9803 /* RCYPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCYPhotoCell.h; sourceTree = "<group>"; };
+		2C6217B21ED40F3D002C9803 /* RCYPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCYPhotoCell.m; sourceTree = "<group>"; };
 		2CF308391DBC10B800B7B16A /* CollectionFiltr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectionFiltr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF3083D1DBC10B800B7B16A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2CF3083F1DBC10B800B7B16A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -52,8 +55,8 @@
 			isa = PBXGroup;
 			children = (
 				2CF3085B1DBDA7B800B7B16A /* CoreImage.framework */,
-				2CF3083B1DBC10B800B7B16A /* CollectionFiltr */,
 				2CF308561DBC430900B7B16A /* Photos.framework */,
+				2CF3083B1DBC10B800B7B16A /* CollectionFiltr */,
 				2CF3083A1DBC10B800B7B16A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,6 +79,8 @@
 				2CF308541DBC373100B7B16A /* RYPhotoCollectionViewController.m */,
 				2CF308581DBD93DF00B7B16A /* RYFilterListTableViewController.h */,
 				2CF308591DBD93DF00B7B16A /* RYFilterListTableViewController.m */,
+				2C6217B11ED40F3D002C9803 /* RCYPhotoCell.h */,
+				2C6217B21ED40F3D002C9803 /* RCYPhotoCell.m */,
 				2CF308481DBC10B800B7B16A /* Assets.xcassets */,
 				2CF3084A1DBC10B800B7B16A /* LaunchScreen.storyboard */,
 				2CF3084D1DBC10B800B7B16A /* Info.plist */,
@@ -163,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CF3085A1DBD93DF00B7B16A /* RYFilterListTableViewController.m in Sources */,
+				2C6217B31ED40F3D002C9803 /* RCYPhotoCell.m in Sources */,
 				2CF308551DBC373100B7B16A /* RYPhotoCollectionViewController.m in Sources */,
 				2CF308411DBC10B800B7B16A /* AppDelegate.m in Sources */,
 				2CF3083E1DBC10B800B7B16A /* main.m in Sources */,

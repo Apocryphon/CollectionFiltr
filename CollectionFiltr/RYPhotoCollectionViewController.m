@@ -7,6 +7,7 @@
 //
 
 #import "RYPhotoCollectionViewController.h"
+#import "RCYPhotoCell.h"
 
 @import Photos;
 
@@ -92,14 +93,12 @@ static NSString *const reuseIdentifier = @"PhotoCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    RCYPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
 
     // Configure the cell
     if (cell.tag) {
         [self.cachingImageManager cancelImageRequest:(PHImageRequestID)cell.tag];
     }
-
-    UIImageView *photoImageView = (UIImageView *)[cell viewWithTag:100];
 
     // for fast loading of initial images
     PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
@@ -111,7 +110,7 @@ static NSString *const reuseIdentifier = @"PhotoCell";
     __weak typeof(self) weakSelf = self;
     void (^resultHandler)(UIImage *, NSDictionary *) = ^(UIImage * _Nullable initialResult, NSDictionary * _Nullable info) {
          if (!weakSelf.currentFilter) {
-            photoImageView.image = initialResult;
+            cell.photoImageView.image = initialResult;
             return;
         } else {
             CIImage *beginImage = [[CIImage alloc] initWithCGImage:initialResult.CGImage options:nil];
@@ -121,7 +120,7 @@ static NSString *const reuseIdentifier = @"PhotoCell";
             CGImageRef cgimg = [_imageContext createCGImage:outputImage fromRect:[outputImage extent]];
             
             UIImage *filteredImage = [UIImage imageWithCGImage:cgimg];
-            photoImageView.image = filteredImage;
+            cell.photoImageView.image = filteredImage;
             
             CGImageRelease(cgimg);
             return;
